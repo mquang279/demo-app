@@ -6,7 +6,7 @@ const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, ''
 const endpoints = { health: '/api/health', version: '/api/version', message: '/api/message' }
 
 function Details({ data }) {
-  if (!data) return <p className="content-text">Loading</p>
+  if (!data) return <p className="content-text">Loading...</p>
   return <dl className="details">{Object.entries(data).map(([key, value]) => (
     <div key={key}><dt>{key}</dt><dd>{String(value)}</dd></div>
   ))}</dl>
