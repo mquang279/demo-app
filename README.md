@@ -6,7 +6,7 @@ Project demo gồm React frontend và FastAPI backend, dùng để minh họa m�
 
 ```text
 Browser → React/Vite (port 3000 hoặc 5173)
-              ↓ HTTP API
+              ↓ /api (Nginx/Vite proxy)
           FastAPI (port 8080) → JSON logs (stdout)
               ↓
           /metrics (Prometheus format)
@@ -39,7 +39,7 @@ pytest
 
 ## Chạy frontend local
 
-Yêu cầu Node.js LTS. Frontend gọi `http://localhost:8080` theo mặc định.
+Yêu cầu Node.js LTS. Vite proxy request `/api` tới `http://localhost:8080` khi phát triển local.
 
 ```bash
 cd frontend
@@ -47,7 +47,9 @@ npm install
 npm run dev
 ```
 
-Mở `http://localhost:5173`. Có thể đổi backend URL bằng biến `VITE_API_BASE_URL` trước khi chạy hoặc build.
+Mở `http://localhost:5173`. Có thể đổi backend URL phía browser bằng biến build-time `VITE_API_BASE_URL`, nhưng production nên giữ rỗng để dùng proxy same-origin.
+
+Khi deploy Kubernetes, frontend Nginx proxy `/api` tới `http://backend:8080` theo mặc định. Service backend cần có tên `backend` và port `8080`. Nếu tên hoặc port khác, đặt biến runtime `BACKEND_URL` trong frontend Deployment, ví dụ `http://backend-service:8080`. Không đặt tên Kubernetes Service vào `VITE_API_BASE_URL`, vì biến đó chạy trong browser và cluster DNS không khả dụng ở đó.
 
 ## Chạy bằng Docker Compose
 

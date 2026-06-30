@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080'
+// Use the frontend origin by default. In production, Nginx forwards /api to the
+// backend over the cluster network, so the browser never resolves cluster DNS.
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
 const endpoints = { health: '/api/health', version: '/api/version', message: '/api/message' }
 
 function Details({ data }) {
@@ -42,7 +44,7 @@ function App() {
           <h1>DevOps Demo App</h1>
           <p>CI/CD Pipeline &amp; Cloud Observability</p>
         </div>
-        <div className="api-badge"><span /> API: {API_BASE_URL}</div>
+        <div className="api-badge"><span /> API: {API_BASE_URL || 'same origin'}</div>
       </header>
 
       <section className="dashboard">
