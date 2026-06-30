@@ -12,14 +12,14 @@ def test_health() -> None:
     assert response.json() == {
         "status": "ok",
         "service": "backend",
-        "version": "v1.0.0",
+        "version": "v2.0.0",
     }
 
 
 def test_version() -> None:
     response = client.get("/api/version")
     assert response.status_code == 200
-    assert response.json() == {"version": "v1.0.0"}
+    assert response.json() == {"version": "v2.0.0"}
 
 
 def test_message() -> None:
@@ -27,7 +27,7 @@ def test_message() -> None:
     assert response.status_code == 200
     assert response.json() == {
         "message": "Hello from CI/CD Observability Demo",
-        "version": "v1.0.0",
+        "version": "v2.0.0",
     }
 
 
@@ -55,4 +55,4 @@ def test_metrics() -> None:
     assert "http_requests_total" in response.text
     assert "http_request_duration_seconds" in response.text
     assert "http_errors_total" in response.text
-    assert 'app_info{service="backend",version="v1.0.0"}' in response.text
+    assert 'app_info{service="backend",version="v2.0.0"}' in response.text
